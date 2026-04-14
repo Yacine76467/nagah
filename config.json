@@ -15,14 +15,14 @@
 "streamSettings": {
 "network": "ws",
 "wsSettings": {
-"path": "/wb"
+"path": "/api"
 }
 }
 }
 ],
 "outbounds": [
 {
-"protocol": "nagah",
+"protocol": "freedom",
 "settings": {}
 }
 ]
