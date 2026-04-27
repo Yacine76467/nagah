@@ -1,40 +1,99 @@
 {
-  "inbounds": [],
-  "outbounds": [
+  "log": {
+    "loglevel": "warning",
+    "access": "/dev/stdout",
+    "error": "/dev/stderr"
+  },
+  "inbounds": [
     {
-      "mux": {
-        "enabled": false
-      },
-      "protocol": "trojan",
+      "port": 8080,
+      "protocol": "vless",
       "settings": {
-        "servers": [
+        "clients": [
           {
-            "address": "104.18.37.127",
-            "level": 8,
-            "password": "7565909083",
-            "port": 443
+            "id": "ba0e3984-ccc9-48a3-8074-b2f507f45ce8",
+            "flow": ""
           }
-        ]
+        ],
+        "decryption": "none"
       },
       "streamSettings": {
         "network": "ws",
-        "security": "tls",
-        "tlsSettings": {
-          "allowInsecure": true,
-          "serverName": "free.sinko.dpdns.org"
-        },
         "wsSettings": {
+          "path": "/yacine",
           "headers": {
-            "Host": "free.sinko.dpdns.org"
-          },
-          "path": "/@YACIN.vip"
-        }
-      },
-      "tag": "TROJAN"
+            "Host": ""
+          }
+        },
+        "security": "none"
+      }
     }
   ],
-  "policy": {
-    "levels": {
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "geosite:google",
+          "geosite:facebook",
+          "geosite:twitter",
+          "geosite:telegram",
+          "geosite:whatsapp",
+          "geosite:netflix",
+          "geosite:youtube",
+          "geosite:github",
+          "geosite:cloudflare",
+          "geosite:openai",
+          "geosite:google-scholar",
+          "domain:firebaseremoteconfig.googleapis.com"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": [
+          "geoip:private",
+          "geoip:cn",
+          "8.8.8.8/32",
+          "1.1.1.1/32"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "domain": [
+          "geosite:category-ads-all"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "network": "udp,tcp"
+      }
+    ]
+  },
+  "dns": {
+    "servers": [
+      "8.8.8.8",
+      "1.1.1.1",
+      "localhost"
+    ]
+  }
+}    "levels": {
       "8": {
         "connIdle": 300,
         "downlinkOnly": 1,
