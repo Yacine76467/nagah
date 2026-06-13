@@ -1,7 +1,7 @@
 FROM teddysun/v2ray:latest
 
-# نسخ ملف الإعدادات الخاص بك
+EXPOSE 8080
+
 COPY config.json /etc/v2ray/config.json
 
-# تشغيل v2ray باستخدام الملف المنسوخ
-CMD ["v2ray", "-config", "/etc/v2ray/config.json"]
+CMD ["v2ray", "run", "-config", "/etc/v2ray/config.json"]
