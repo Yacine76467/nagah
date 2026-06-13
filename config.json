@@ -1,103 +1,59 @@
 {
-  "log": {
-    "loglevel": "warning"
-  },
-  "policy": {
-    "levels": {
-      "0": {
-        "handshake": 3,
-        "connIdle": 60,
-        "uplinkOnly": 1,
-        "downlinkOnly": 1,
-        "bufferSize": 512
-      }
-    },
-    "system": {
-      "statsInboundUplink": false,
-      "statsInboundDownlink": false
-    }
-  },
-  "inbounds": [
-    {
-      "port": 8080,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          {
-            "id": "ba0e3984-ccc9-48a3-1744-b2f507f56se8",
-            "level": 0,
-            "flow": ""
-          }
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "none",
-        "wsSettings": {
-          "path": "/ANDROID",
-          "headers": {
-            "Host": ""
-          }
-        },
-        "sockopt": {
-          "tcpFastOpen": true,
-          "tcpKeepAliveInterval": 15,
-          "tcpKeepAliveIdle": 30,
-          "mark": 0,
-          "tproxy": "off"
-        }
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": ["http", "tls"],
-        "routeOnly": true
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "tag": "direct",
-      "protocol": "freedom",
-      "settings": {
-        "domainStrategy": "UseIPv4",
-        "userLevel": 0
-      },
-      "streamSettings": {
-        "sockopt": {
-          "tcpFastOpen": true,
-          "tcpKeepAliveInterval": 15,
-          "tcpKeepAliveIdle": 30,
-          "mark": 0
-        }
-      }
-    },
-    {
-      "tag": "block",
-      "protocol": "blackhole",
-      "settings": {}
-    }
-  ],
-  "routing": {
-    "domainStrategy": "IPIfNonMatch",
-    "rules": [
-      {
-        "type": "field",
-        "ip": ["geoip:private"],
-        "outboundTag": "block"
-      }
-    ]
-  },
-  "dns": {
-    "servers": [
-      {
-        "address": "8.8.8.8",
-        "port": 53,
-        "domains": ["geosite:geolocation-!cn"]
-      },
-      "1.1.1.1",
-      "localhost"
-    ],
-    "queryStrategy": "UseIPv4"
-  }
+
+"inbounds": [
+
+{
+
+"port": 8080,
+
+"protocol": "vless",
+
+"settings": {
+
+"clients": [
+
+{
+
+"id": "d2cb8181-233c-4d18-9972-
+
+8a1b04db9544",
+
+"level": 0
+
+}
+
+1,
+
+"decryption": "none"
+
+},
+
+"streamSettings": {
+
+"network": "ws",
+
+"wsSettings": {
+
+"path": "/android "
+
+}
+
+}
+
+}
+
+1,
+
+"outbounds": [
+
+{
+
+"protocol": "freedom",
+
+"settings": {}
+
+}
+
+]
+
 }
