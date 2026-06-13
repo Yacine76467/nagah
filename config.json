@@ -1,8 +1,21 @@
 {
   "log": {
-    "loglevel": "warning",
-    "access": "/dev/stdout",
-    "error": "/dev/stderr"
+    "loglevel": "warning"
+  },
+  "policy": {
+    "levels": {
+      "0": {
+        "handshake": 3,
+        "connIdle": 60,
+        "uplinkOnly": 1,
+        "downlinkOnly": 1,
+        "bufferSize": 512
+      }
+    },
+    "system": {
+      "statsInboundUplink": false,
+      "statsInboundDownlink": false
+    }
   },
   "inbounds": [
     {
@@ -11,7 +24,8 @@
       "settings": {
         "clients": [
           {
-            "id": "ba0e3984-ccc9-48a3-8074-b2f507f45ce8",
+            "id": "ba0e3984-ccc9-48a3-1744-b2f507f56se8",
+            "level": 0,
             "flow": ""
           }
         ],
@@ -19,26 +33,49 @@
       },
       "streamSettings": {
         "network": "ws",
+        "security": "none",
         "wsSettings": {
-          "path": "/yacine",
+          "path": "/ANDROID",
           "headers": {
             "Host": ""
           }
         },
-        "security": "none"
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpKeepAliveInterval": 15,
+          "tcpKeepAliveIdle": 30,
+          "mark": 0,
+          "tproxy": "off"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls"],
+        "routeOnly": true
       }
     }
   ],
   "outbounds": [
     {
+      "tag": "direct",
       "protocol": "freedom",
-      "settings": {},
-      "tag": "direct"
+      "settings": {
+        "domainStrategy": "UseIPv4",
+        "userLevel": 0
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpKeepAliveInterval": 15,
+          "tcpKeepAliveIdle": 30,
+          "mark": 0
+        }
+      }
     },
     {
+      "tag": "block",
       "protocol": "blackhole",
-      "settings": {},
-      "tag": "blocked"
+      "settings": {}
     }
   ],
   "routing": {
@@ -46,60 +83,21 @@
     "rules": [
       {
         "type": "field",
-        "outboundTag": "direct",
-        "domain": [
-          "geosite:google",
-          "geosite:facebook",
-          "geosite:twitter",
-          "geosite:telegram",
-          "geosite:whatsapp",
-          "geosite:netflix",
-          "geosite:youtube",
-          "geosite:github",
-          "geosite:cloudflare",
-          "geosite:openai",
-          "geosite:google-scholar",
-          "domain:firebaseremoteconfig.googleapis.com"
-        ]
-      },
-      {
-        "type": "field",
-        "outboundTag": "direct",
-        "ip": [
-          "geoip:private",
-          "geoip:cn",
-          "8.8.8.8/32",
-          "1.1.1.1/32"
-        ]
-      },
-      {
-        "type": "field",
-        "outboundTag": "blocked",
-        "domain": [
-          "geosite:category-ads-all"
-        ]
-      },
-      {
-        "type": "field",
-        "outboundTag": "direct",
-        "network": "udp,tcp"
+        "ip": ["geoip:private"],
+        "outboundTag": "block"
       }
     ]
   },
   "dns": {
     "servers": [
-      "8.8.8.8",
+      {
+        "address": "8.8.8.8",
+        "port": 53,
+        "domains": ["geosite:geolocation-!cn"]
+      },
       "1.1.1.1",
       "localhost"
-    ]
-  }
-}    "levels": {
-      "8": {
-        "connIdle": 300,
-        "downlinkOnly": 1,
-        "handshake": 4,
-        "uplinkOnly": 1
-      }
-    }
+    ],
+    "queryStrategy": "UseIPv4"
   }
 }
